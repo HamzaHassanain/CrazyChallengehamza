@@ -45,8 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aa582bff2502224ebea45c1f695618c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uselessScenes: 2
-  ScenesCount: 4
+  PuseMenu: {fileID: 0}
+  WinMenu: {fileID: 0}
+  DieMenu: {fileID: 0}
+  ScenesCount: 11
 --- !u!61 &276472371141235142
 BoxCollider2D:
   m_ObjectHideFlags: 0
