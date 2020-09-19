@@ -9,8 +9,7 @@ public class Player : MonoBehaviour
 {
 
     [SerializeField] float PlayerHealth;
-    [SerializeField] float PlayerBreath;
-    [SerializeField] GameManager gameManager;
+    [SerializeField]  float PlayerBreath;
     [SerializeField] float Speed;
     [SerializeField] float JumpSpeed;
     [SerializeField] float JumpHoldTime;
@@ -20,9 +19,10 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject PlayerDestroyParticles;
     [SerializeField] GameObject CoinDestroyParticles;
 
+    private GameManager gameManager;
 
-    [SerializeField] GameObject HealthBar;
-    [SerializeField] GameObject BreathBar;
+    private GameObject HealthBar;
+    private GameObject BreathBar;
 
     private Slider HealthSlider;
     private Slider BreathSldier;
@@ -36,7 +36,8 @@ public class Player : MonoBehaviour
     private float dir;
     private float JumpRemaningTime;
     private bool isGrounded;
-    private bool isJumping;
+    [SerializeField] int ExtaJumps ;
+    private int CurrentExtraJumps;
 
     private bool isOnSpicks;
     private bool isUnderWater;
@@ -45,6 +46,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        CurrentExtraJumps = ExtaJumps;
+        HealthBar = GameObject.Find("HealthBar");
+        BreathBar = GameObject.Find("BreathUnderLava");
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         isPlayerUnderWater = true;
         isOnSpicks = false;
         isUnderWater = false;
@@ -75,30 +80,20 @@ public class Player : MonoBehaviour
      
         
         isGrounded = Physics2D.OverlapCircle(FeetPosetion.position, GroundCheckRadus, WhatIsGround);
-        if(Input.GetKeyDown(KeyCode.UpArrow) && isGrounded)
+        if(Input.GetKeyDown(KeyCode.UpArrow) && CurrentExtraJumps > 0 )
         {
             JumpRemaningTime = JumpHoldTime;
             animator.SetTrigger("Jump");
-            isJumping = true;
-            rb.velocity = Vector3.up * JumpSpeed;
+            CurrentExtraJumps--;
+            Debug.Log(CurrentExtraJumps);
+            rb.velocity = Vector2.up * JumpSpeed;
         }
 
-        if(Input.GetKey(KeyCode.UpArrow) && isJumping)
-        {
-
-            if(JumpRemaningTime > 0)
-            {
-                animator.SetTrigger("Jump");
-
-                rb.velocity = Vector3.up * JumpSpeed;
-                JumpRemaningTime -= Time.deltaTime;
-            } else
-            {
-                animator.ResetTrigger("Jump");
-
-                isJumping = false;
-            }
+      
+        if (isGrounded == true) {
+            CurrentExtraJumps =  ExtaJumps;
         }
+      
     }
     private void FixedUpdate()
     {
@@ -177,18 +172,15 @@ public class Player : MonoBehaviour
 
         }
     }
-    private void Restart()
-    {
-        gameManager.Restart();
-    }
+  
     private void Die()
     {
         FindObjectOfType<AudioManager>().Play("Die");
         health = 0;
         HealthSlider.value = 0;
-        Destroy(gameObject);
         Instantiate(PlayerDestroyParticles, transform.position, Quaternion.identity);
-        Restart();
+        gameManager.Die();
+        Destroy(gameObject);
     }
-    
+ 
 }
