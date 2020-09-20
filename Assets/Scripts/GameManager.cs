@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject WinMenu;
     [SerializeField] GameObject DieMenu;
 
-    [SerializeField] int ScenesCount;
+    // [SerializeField] int ScenesCount;
+    [SerializeField] int LastSceneIndex;
+
     // Start is called before the first frame update
     private GameObject camera;
   
@@ -17,7 +19,8 @@ public class GameManager : MonoBehaviour
 
    private void Start() {
        isPused = false;
-    
+
+       
         Time.timeScale = 1;
         PuseMenu.SetActive(false);
         WinMenu.SetActive(false);
@@ -48,6 +51,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
+   
     private void Win() {
         Time.timeScale = 0;
         isPused = true;
@@ -71,7 +75,7 @@ public class GameManager : MonoBehaviour
     
     public void LoadNextScene()
     {
-        if(SceneManager.GetActiveScene().buildIndex + 1 == ScenesCount)
+        if(SceneManager.GetActiveScene().buildIndex == LastSceneIndex)
             SceneManager.LoadScene("MainMenu");
         else 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);

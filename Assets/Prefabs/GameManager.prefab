@@ -48,7 +48,7 @@ MonoBehaviour:
   PuseMenu: {fileID: 0}
   WinMenu: {fileID: 0}
   DieMenu: {fileID: 0}
-  ScenesCount: 11
+  LastSceneIndex: 8
 --- !u!61 &276472371141235142
 BoxCollider2D:
   m_ObjectHideFlags: 0

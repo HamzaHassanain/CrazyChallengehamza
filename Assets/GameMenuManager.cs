@@ -7,7 +7,7 @@ using Cinemachine;
 public class GameMenuManager : MonoBehaviour
 {
     [SerializeField] GameObject PuseMenu;
-      [SerializeField] int ScenesCount;
+    [SerializeField] int LastSceneIndex;
     // Start is called before the first frame update
   
    private bool isPused;
@@ -30,7 +30,7 @@ public class GameMenuManager : MonoBehaviour
     
     public void LoadNextScene()
     {
-        if(SceneManager.GetActiveScene().buildIndex + 1 == ScenesCount)
+        if(SceneManager.GetActiveScene().buildIndex  == LastSceneIndex)
             SceneManager.LoadScene("MainMenu");
         else 
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
